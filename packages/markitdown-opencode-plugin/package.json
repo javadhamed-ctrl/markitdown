@@ -1,0 +1,35 @@
+{
+  "name": "markitdown-opencode-plugin",
+  "version": "0.1.0",
+  "description": "Opencode plugin for automatic file-to-Markdown conversion using markitdown",
+  "main": "src/auto-markitdown.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests yet\""
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "markitdown",
+    "markdown",
+    "conversion",
+    "pdf",
+    "docx",
+    "xlsx",
+    "pptx"
+  ],
+  "author": "Javad Hamed <javadhamed@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/javadhamed-ctrl/markitdown.git"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@opencode-ai/plugin": "^1.0.0"
+  }
+}

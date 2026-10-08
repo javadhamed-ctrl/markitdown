@@ -6,6 +6,41 @@
 > [!IMPORTANT]
 > MarkItDown performs I/O with the privileges of the current process. Like open() or requests.get(), it will access resources that the process itself can access. Sanitize your inputs in untrusted environments, and call the narrowest `convert_*` function needed for your use case (e.g., `convert_stream()`, or `convert_local()`). See the [Security Considerations](#security-considerations) section of the documentation for more information.
 
+## 🍴 This Fork: markitdown-opencode-plugin
+
+**This repository is a fork of [microsoft/markitdown](https://github.com/microsoft/markitdown) that adds a first-class [opencode](https://opencode.ai) plugin for automatic file-to-Markdown conversion.**
+
+### Why This Fork Exists
+
+When using the **opencode** AI coding agent, you often need to read non-text files (PDFs, Word docs, Excel sheets, images, audio, video). opencode natively only reads text files — binary files appear as garbage or fail.
+
+**This fork solves that** by providing an opencode plugin that:
+1. **Automatically intercepts** `read`/`edit` tool calls for supported file types
+2. **Runs markitdown** to convert the file to `.md` format
+3. **Redirects opencode** to read the clean Markdown instead
+4. **Works transparently** — zero configuration, just works
+
+```bash
+# Before: opencode can't read these
+read spec.pdf           # ❌ Binary garbage
+read requirements.docx  # ❌ Binary garbage
+read data.xlsx          # ❌ Binary garbage
+
+# After: With this fork's plugin
+read spec.pdf           # ✅ Clean Markdown!
+read requirements.docx  # ✅ Clean Markdown!
+read data.xlsx          # ✅ Clean Markdown!
+```
+
+### New Package: `markitdown-opencode-plugin`
+
+See [`packages/markitdown-opencode-plugin`](packages/markitdown-opencode-plugin) for the complete plugin with:
+- TypeScript opencode plugin (`src/auto-markitdown.ts`)
+- Automatic conversion of 25+ file formats
+- Zero-config installation
+
+---
+
 MarkItDown is a lightweight Python utility for converting various files to Markdown for use with LLMs and related text analysis pipelines. To this end, it is most comparable to [textract](https://github.com/deanmalmgren/textract), but with a focus on preserving important document structure and content as Markdown (including: headings, lists, tables, links, etc.) While the output is often reasonably presentable and human-friendly, it is meant to be consumed by text analysis tools -- and may not be the best option for high-fidelity document conversions for human consumption.
 
 MarkItDown currently supports the conversion from:
