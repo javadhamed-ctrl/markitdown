@@ -166,3 +166,86 @@ MIT License - Same as upstream markitdown.
 ---
 
 **Built with AI-assisted coding on opencode platform** using `opencode/nemotron-3-ultra-free` model.
+
+---
+
+## 🇮🇷 مستندات فارسی (Persian Documentation)
+
+### 🎯 چرا این پلاگین؟
+
+این پلاگین برای **opencode**Factor AI coding agent، تبدیل خودکار فایل‌های غیرمتنی به Markdown را فراهم می‌کند.
+
+#### مشکل
+وقتی با opencode کار می‌کنید، اغلب نیاز به خواندن فایل‌های PDF، Word، Excel، PowerPoint، تصاویر، صدا و ویدیو دارید. اما opencode بومی فقط متن می‌خواند — فایل‌های باینری به عنوان زباله دیده می‌شوند.
+
+#### راه حل
+این پلاگین **به طور خودکار** هر فایل پشتیبانی‌شده را قبل از خواندن/ویرایش توسط opencode به Markdown تبدیل می‌کند:
+
+```
+User: "Read the spec.pdf"
+         │
+         ▼
+┌────────────────────────┐
+│ markitdown-opencode    │  ← پلاگین فراخوان read را رهگیری می‌کند
+│ plugin                 │
+└────────────────────────┘
+         │
+         ▼
+   markitdown spec.pdf -o spec.md
+         │
+         ▼
+┌────────────────────────┐
+│ opencode reads         │  ← Markdown تمیز و ساختاریافته
+│ spec.md instead        │
+└────────────────────────┘
+```
+
+### ✨ ویژگی‌های کلیدی
+- ✅ **بدون پیکربندی** — بلافاصله کار می‌کند
+- ✅ **خودکار** — نیازی به تبدیل دستی نیست
+- ✅ **شفاف** — فایل‌های اصلی دست‌نخورده می‌مانند، فایل `.md` کنارشان ساخته می‌شود
+- ✅ **جامع** — پشتیبانی از ۲۵+ فرمت فایل
+- ✅ **سریع** — از مبدل‌های بهینه markitdown استفاده می‌کند
+
+### 📦 فرمت‌های پشتیبانی شده
+(مشابه جدول بالا در مستندات انگلیسی)
+
+### 🚀 نصب
+
+در `opencode.json` پروژه‌تان:
+
+```json
+{
+  "plugin": [
+    "./.opencode/plugin/auto-markitdown.ts"
+  ]
+}
+```
+
+**پیش‌نیازها:**
+1. `pip install 'markitdown[all]'`
+2. opencode با پشتیبانی پلاگین
+3. Node.js/Bun برای اجرای پلاگین TypeScript
+
+### 💡 استفاده
+فقط به صورت معمول از opencode استفاده کنید — تبدیل به صورت خودکار اتفاق می‌افتد:
+```bash
+read specification.pdf
+read requirements.docx
+read data.xlsx
+read presentation.pptx
+read image.png
+read audio.mp3
+read video.mp4
+```
+
+### 🔧 نحوه کار
+پلاگین در خط لوله اجرای ابزار opencode قلابی می‌زند (hook `tool.execute.before`) و برای ابزارهای `read`/`edit`، فایل را به Markdown تبدیل کرده و مسیر را به فایل `.md` تغییر می‌دهد.
+
+### 📄 مجوز
+MIT License — مشابه markitdown بالا.
+
+### 🙏 تشکر
+- **بالادستی**: [microsoft/markitdown](https://github.com/microsoft/markitdown)
+- **Opencode**: [opencode-ai/opencode](https://github.com/opencode-ai/opencode)
+- **نویسنده**: جواد حامد (@javadhamed-ctrl)

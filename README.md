@@ -441,3 +441,124 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+---
+
+## 🇮🇷 مستندات فارسی (Persian Documentation)
+
+### 🍴 این فورک: markitdown-opencode-plugin
+
+**این مخزن یک فورک از [microsoft/markitdown](https://github.com/microsoft/markitdown) است که یک پلاگین第一类 برای [opencode](https://opencode.ai) اضافه می‌کند تا تبدیل خودکار فایل‌ها به Markdown را امکان‌پذیر سازد.**
+
+### چرا این فورک وجود دارد؟
+
+هنگام استفاده از عامل کدنویسی **opencode**، اغلب نیاز دارید فایل‌های غیرمتنی را بخوانید (PDFها، اسناد Word، صفحات Excel، تصاویر، فایل‌های صوتی، ویدیو). opencode به طور بومی فقط فایل‌های متنی را می‌خواند — فایل‌های باینری به صورت زباله‌های باینری دیده می‌شوند یا خوانده نمی‌شوند.
+
+**این فورک آن مشکل را حل می‌کند** با ارائه یک پلاگین opencode که:
+1. **به طور خودکار** فراخوانی ابزار `read`/`edit` برای انواع فایل‌های پشتیبانی شده را رهگیری می‌کند
+2. **markitdown را اجرا می‌کند** تا فایل را به فرمت `.md` تبدیل کند
+3. **opencode را هدایت می‌کند** تا به جای فایل اصلی، Markdown تمیز را بخواند
+4. **به صورت شفاف کار می‌کند** — بدون پیکربندی، فقط کار می‌کند
+
+```bash
+# قبل: opencode نمی‌تواند این‌ها را بخواند
+read spec.pdf           # ❌ زباله باینری
+read requirements.docx  # ❌ زباله باینری
+read data.xlsx          # ❌ زباله باینری
+
+# بعد: با پلاگین این فورک
+read spec.pdf           # ✅ Markdown تمیز!
+read requirements.docx  # ✅ Markdown تمیز!
+read data.xlsx          # ✅ Markdown تمیز!
+```
+
+### پکیج جدید: `markitdown-opencode-plugin`
+
+برای پلاگین کامل به [`packages/markitdown-opencode-plugin`](packages/markitdown-opencode-plugin) مراجعه کنید:
+- پلاگین opencode نوشته شده با TypeScript (`src/auto-markitdown.ts`)
+- تبدیل خودکار ۲۵+ فرمت فایل
+- نصب بدون پیکربندی (zero-config)
+
+---
+
+### پیش‌نیازها
+MarkItDown نیاز به Python 3.10 تا 3.14 دارد. استفاده از محیط مجازی توصیه می‌شود.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # ویندوز: .venv\Scripts\activate
+```
+
+### نصب
+
+```bash
+pip install 'markitdown[all]'
+```
+
+یا از سورس:
+```bash
+git clone https://github.com/javadhamed-ctrl/markitdown.git
+cd markitdown
+pip install -e 'packages/markitdown[all]'
+```
+
+### استفاده در opencode
+
+در `opencode.json` پروژه‌تان پلاگین را اضافه کنید:
+
+```json
+{
+  "plugin": [
+    "./.opencode/plugin/auto-markitdown.ts"
+  ]
+}
+```
+
+سپس opencode را ریستارت کنید. حالا به سادگی:
+```bash
+read spec.pdf
+read requirements.docx
+read data.xlsx
+read image.png
+read audio.mp3
+read video.mp4
+```
+همه به صورت خودکار به Markdown تبدیل شده و خوانده می‌شوند.
+
+### فرمت‌های پشتیبانی شده
+
+| دسته | پسوندها |
+|------|----------|
+| اسناد | `.pdf`, `.docx`, `.doc`, `.epub` |
+| صفحات گسترده | `.xlsx`, `.xls` |
+| ارائه‌ها | `.pptx`, `.ppt` |
+| وب | `.html`, `.htm` |
+| داده | `.csv`, `.json`, `.xml`, `.zip` |
+| تصاویر | `.jpg`, `.jpeg`, `.png`, `.gif`, `.bmp`, `.tiff`, `.webp` |
+| صوت | `.mp3`, `.wav`, `.m4a`, `.flac`, `.ogg` |
+| ویدیو | `.mp4`, `.mov`, `.avi`, `.mkv`, `.webm` |
+
+### نحوه عملکرد
+
+پلاگین در خط لوله اجرای ابزار opencode قلابی (hook) می‌زند:
+
+```typescript
+"tool.execute.before": async (input, output) => {
+  if (tool === "read" || tool === "edit") {
+    const mdPath = await convertToMarkdown(filePath)
+    if (mdPath) output.args.filePath = mdPath
+  }
+}
+```
+
+### مجوز
+MIT License — مشابه MarkItDown بالا.
+
+### кредит‌ها
+- **بالادستی (Upstream)**: [microsoft/markitdown](https://github.com/microsoft/markitdown) — موتور تبدیل شگفت‌انگیز
+- **Opencode**: [opencode-ai/opencode](https://github.com/opencode-ai/opencode) — عامل کدنویسی هوش مصنوعی
+- **نویسنده**: جواد حامد (@javadhamed-ctrl)
+
+---
+
+**ساخته شده با کدنویسی کمکی هوش مصنوعی روی پلتفرم opencode** با مدل `opencode/nemotron-3-ultra-free`.
